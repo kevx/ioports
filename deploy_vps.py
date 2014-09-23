@@ -13,6 +13,7 @@ _sh_enc = 'openssl enc -in %s -out %s -e -aes-256-cbc -k %s'
 _sh_dec = 'openssl enc -in %s -out %s -d -aes-256-cbc -k %s'
 
 _cmd = None
+_opt = None
 _passwd = None
 _targets = {}
 
@@ -28,14 +29,18 @@ def walk_dir(d):
 
 
 def init_manifest():
-    f = open('targets.lst', 'r')
+    f = open('manifest.lst', 'r')
     for line in f:
         line = line.strip()
         if os.path.isdir(line): walk_dir(line)
         elif os.path.isfile(line): 
             _targets[md5str(line)] = line
     f.close()
-
+    f = open('map.lst', 'w')
+    for l in _targets:
+        f.write(l)
+        f.write('\n')
+    f.close()
 
 def debug():
     for k,v in _targets.items():
@@ -43,15 +48,15 @@ def debug():
 
 
 def main():
-    tmpws = '/tmp/depvps'
+    tmpws = '/tmp/depvps/'
     zpath = '/tmp/main_data.zip'
     zxpath = 'main_data.zip.x'
     cmd = ''
     init_manifest()
     if os.path.exists(zpath): os.remove(zpath)
-    if _cmd == 'to':
+    if _cmd == 'push':
         z = ZipFile(zpath, 'w')
-        for k, v in _targets.items(): z.write(v, k)
+        for k, v in _targets.items(): z.write(v, v)
         z.close()
         cmd = _sh_enc%(zpath, zxpath, _passwd)
         os.system(cmd)
@@ -59,7 +64,7 @@ def main():
         os.system('git commit -m coding')
         os.system('git push')
 
-    elif _cmd == 'from':
+    elif _cmd == 'pull':
         os.system('git pull')
         if not os.path.exists(zxpath):
             print('main_data not found!')
@@ -69,7 +74,10 @@ def main():
         z = ZipFile(zpath, 'r')
         entries = z.namelist()
         for e in entries:
-            if _targets.has_key(e):
+            if not _targets.has_key(e): continue
+            if _opt.startswith('unzip'):
+                z.extract(e, tmpws)
+            else:
                 z.extract(e, _targets[e])
         z.close()
 
@@ -79,4 +87,5 @@ if __name__ == '__main__':
         exit()
     _cmd = sys.argv[1]
     _passwd = sys.argv[2]
+    _opt = sys.argv[3] if len(sys.argv) > 3 else ''
     main()
