@@ -6,6 +6,7 @@
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 target/
+main_data.zip
 dependency-reduced-pom.xml
 
 # Package Files #
