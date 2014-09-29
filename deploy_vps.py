@@ -58,6 +58,7 @@ def repack(tmp):
     z = ZipFile(_zpath, 'w')
     for dirpath, dnames, fnames in os.walk(tmp):
         for f in fnames:
+            if f.endswith('.db'): continue
             fpath = '%s/%s'%(dirpath, f)
             z.write(fpath, fpath[9:])
     z.close()
