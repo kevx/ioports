@@ -61,7 +61,7 @@ def repack(tmp):
             fpath = '%s/%s'%(dirpath, f)
             z.write(fpath, fpath[9:])
     z.close()
-    shutil.rmtree(tmp)    
+    #shutil.rmtree(tmp)    
 
 def main():
     zxpath = 'main_data.zip.x'
@@ -69,7 +69,7 @@ def main():
     init_manifest()
     if os.path.exists(_zpath): os.remove(_zpath)
     if _cmd == 'push-repack':
-        repack(_opt)
+        repack('./secret')
         cmd = _sh_enc%(_zpath, zxpath, _passwd)
         os.system(cmd)
         git_push()
@@ -93,8 +93,7 @@ def main():
 
     elif _cmd == 'pull-ext': # pull and extract
         git_pull_and_dec(zxpath, _zpath)
-        tmp = '/tmp/' + str(random.randint(1000,9999))
-        tmpf = tmp + _opt
+        tmp = './secret/' #'/tmp/' + str(random.randint(1000,9999))
         z = ZipFile(_zpath, 'r')
         z.extractall(tmp)
         z.close()

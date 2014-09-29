@@ -6,6 +6,7 @@
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 target/
+secret/
 main_data.zip
 manifest.lst
 dependency-reduced-pom.xml
