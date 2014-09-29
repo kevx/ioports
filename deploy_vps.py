@@ -16,7 +16,6 @@ _sh_dec = 'openssl enc -in %s -out %s -d -aes-256-cbc -k %s'
 _zpath = 'main_data.zip'
 
 _cmd = None
-_opt = None
 _passwd = None
 _targets = []
 
@@ -106,5 +105,4 @@ if __name__ == '__main__':
         exit()
     _cmd = sys.argv[1]
     _passwd = sys.argv[2]
-    _opt = sys.argv[3] if len(sys.argv) > 3 else ''
     main()
