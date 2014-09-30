@@ -87,8 +87,7 @@ def main():
         git_pull_and_dec(zxpath, _zpath)
         z = ZipFile(_zpath, 'r')
         entries = z.namelist()
-        for e in entries:
-            z.extract(e, '/')
+        z.extractall('/')
         z.close()
 
     elif _cmd == 'pull-ext': # pull and extract
