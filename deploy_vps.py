@@ -88,7 +88,7 @@ def main():
         z = ZipFile(_zpath, 'r')
         entries = z.namelist()
         for e in entries:
-            z.extract(e)
+            z.extract(e, '/')
         z.close()
 
     elif _cmd == 'pull-ext': # pull and extract
