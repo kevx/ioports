@@ -100,6 +100,8 @@ def main():
 
 if __name__ == '__main__':
     os.system('find . -name ".DS_Store" -depth -exec rm {} \;')
+    os.system('find . -name "*.pyc" -depth -exec rm {} \;')
+    os.system('find . -name "*.db" -depth -exec rm {} \;')
     if len(sys.argv) < 3:
         print('invalid_params')
         exit()
